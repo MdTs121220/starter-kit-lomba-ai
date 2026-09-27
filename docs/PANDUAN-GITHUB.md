@@ -43,4 +43,6 @@ Link: `https://<username>.github.io/<nama-repo>/` (aktif 1–2 menit kemudian).
 - **Supabase** (PostgreSQL + login): gratis 2 proyek aktif, 500 MB database. Proyek di-*pause* kalau tidak dipakai ±1 minggu, jadi buka dashboard dan *Restore* sebelum lomba.
 - **Firebase** (Firestore + Auth): paket Spark gratis.
 
+Langkah lengkap Supabase: lihat [`PANDUAN-SUPABASE.md`](PANDUAN-SUPABASE.md).
+
 ⚠️ Paket gratis bisa berubah. Cek halaman harga resmi sebelum memilih.

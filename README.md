@@ -19,6 +19,7 @@ starter-kit-lomba-ai/
 │   ├── CHECKLIST-KEAMANAN.md  ← cek sebelum dikumpulkan
 │   ├── DEFINITION-OF-DONE.md  ← kapan fitur dianggap "selesai"
 │   ├── PANDUAN-GITHUB.md      ← upload kode & hosting gratis
+│   ├── PANDUAN-SUPABASE.md    ← database + login gratis, langkah demi langkah
 │   └── PANDUAN-PRESENTASI.md  ← demo 10 menit, video, manual, poster
 ├── contoh/
 │   └── PRD-contoh-pinjamlab.md
@@ -31,7 +32,8 @@ starter-kit-lomba-ai/
 2. **Isi `PRD.md`** bersama tim. Wawancarai calon pengguna (guru, TU, petugas perpus). Jangan lewati langkah ini.
 3. **Pilih stack** yang kalian kuasai dan catat di `AGENTS.md` bagian *Stack*.
 4. **Mulai sesi AI** dengan menempelkan `AGENTS.md` + `PRD.md`, lalu minta *rencana*, bukan kode. Lihat `docs/BANK-PROMPT.md` prompt #1.
-5. **Bangun per fitur**, uji, commit ke GitHub, ulangi. Sebelum mengumpulkan, jalankan `docs/CHECKLIST-KEAMANAN.md`.
+5. **Butuh database?** Pakai PHP + MySQL, atau Supabase gratis: ikuti `docs/PANDUAN-SUPABASE.md`.
+6. **Bangun per fitur**, uji, commit ke GitHub, ulangi. Sebelum mengumpulkan, jalankan `docs/CHECKLIST-KEAMANAN.md`.
 
 ## Pilihan tools AI (versi gratis, September 2026)
 
