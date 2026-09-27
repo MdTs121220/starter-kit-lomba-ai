@@ -16,6 +16,7 @@ create table if not exists public.peminjaman (
   dikembalikan_pada timestamptz,
   dicatat_oleh      uuid not null default auth.uid() references auth.users(id)
 );
+create index if not exists peminjaman_dicatat_oleh_idx on public.peminjaman (dicatat_oleh);
 
 -- 2. KEAMANAN: aktifkan Row Level Security (RLS).
 --    Tanpa RLS, siapa pun yang tahu "anon key" (yang memang terlihat
@@ -32,10 +33,10 @@ create policy "guru boleh lihat" on public.peminjaman
   for select to authenticated using (true);
 
 create policy "guru boleh tambah" on public.peminjaman
-  for insert to authenticated with check (dicatat_oleh = auth.uid());
+  for insert to authenticated with check (dicatat_oleh = (select auth.uid()));
 
 create policy "guru boleh ubah" on public.peminjaman
-  for update to authenticated using (true) with check (true);
+  for update to authenticated using (true) with check (status in ('dipinjam', 'dikembalikan'));
 
 -- Sengaja TIDAK ada policy DELETE: data peminjaman tidak bisa dihapus,
 -- hanya ditandai "dikembalikan". Ini menjaga jejak (audit trail).

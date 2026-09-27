@@ -10,6 +10,6 @@
 // berjalan dalam MODE DEMO (data disimpan di browser saja).
 // =====================================================================
 window.PINJAMLAB_CONFIG = {
-  SUPABASE_URL: "",       // contoh: "https://abcdefgh.supabase.co"
-  SUPABASE_ANON_KEY: ""   // contoh: "eyJhbGciOi..." atau "sb_publishable_..."
+  SUPABASE_URL: "https://ptaxlpndrpjorgtehzys.supabase.co",
+  SUPABASE_ANON_KEY: "sb_publishable_gk0VGri6DmkYvVQGmMJuvw_nZnvlXE4"  // publishable key: aman di frontend karena RLS aktif
 };
