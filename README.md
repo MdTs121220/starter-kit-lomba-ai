@@ -26,7 +26,7 @@ starter-kit-lomba-ai/
 └── demo-app/                  ← aplikasi contoh PinjamLab (lihat README-nya)
 ```
 
-## Mulai dalam 5 langkah
+## Mulai dalam 6 langkah
 
 1. **Fork / download** kit ini, lalu buat repository GitHub untuk tim kalian.
 2. **Isi `PRD.md`** bersama tim. Wawancarai calon pengguna (guru, TU, petugas perpus). Jangan lewati langkah ini.
