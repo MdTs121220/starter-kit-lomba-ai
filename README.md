@@ -22,9 +22,24 @@ starter-kit-lomba-ai/
 │   ├── PANDUAN-SUPABASE.md    ← database + login gratis, langkah demi langkah
 │   └── PANDUAN-PRESENTASI.md  ← demo 10 menit, video, manual, poster
 ├── contoh/
+│   ├── PRD-contoh-absenku.md
 │   └── PRD-contoh-pinjamlab.md
-└── demo-app/                  ← aplikasi contoh PinjamLab (lihat README-nya)
+├── demo-absen/                ← DEMO 1: AbsenKu, absen siswa TANPA database (bisa offline)
+└── demo-app/                  ← DEMO 2: PinjamLab, peminjaman alat lab DENGAN database Supabase
 ```
+
+## Dua aplikasi demo
+
+| | Demo 1: `demo-absen/` (AbsenKu) | Demo 2: `demo-app/` (PinjamLab) |
+|---|---|---|
+| Database | Tidak ada, data di browser | Supabase (gratis) |
+| Login | Tidak ada | Ada |
+| Butuh internet | Tidak | Ya |
+| Cocok untuk | Pemula, demo cadangan | Aplikasi yang dipakai banyak guru |
+
+Coba online (setelah GitHub Pages aktif):
+- AbsenKu: https://mdts121220.github.io/starter-kit-lomba-ai/demo-absen/
+- PinjamLab: https://mdts121220.github.io/starter-kit-lomba-ai/demo-app/
 
 ## Mulai dalam 6 langkah
 

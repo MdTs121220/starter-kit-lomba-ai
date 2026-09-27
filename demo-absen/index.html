@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AbsenKu — Absensi Siswa Sederhana</title>
+  <meta name="description" content="Aplikasi absensi siswa satu file, tanpa database. Data tersimpan di browser.">
+  <style>
+    /* ---------- Warna & ukuran dasar ---------- */
+    :root {
+      --bg: #f4f6fb; --surface: #fff; --text: #1b2333; --muted: #5d6879; --line: #e1e6ef;
+      --primary: #0f7a6e; --primary-dark: #0b5e55;
+      --H: #0f8a5f; --H-bg: #e3f6ee;   /* Hadir */
+      --I: #1f5eff; --I-bg: #e6edff;   /* Izin  */
+      --S: #b25e00; --S-bg: #fff1dc;   /* Sakit */
+      --A: #c62b2b; --A-bg: #fde8e8;   /* Alpa  */
+      --radius: 12px;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+           background: var(--bg); color: var(--text); line-height: 1.5; }
+    header { background: var(--primary); color: #fff; padding: 14px 16px; }
+    header .wrap { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 0; }
+    header h1 { margin: 0; font-size: 1.15rem; }
+    header small { display: block; font-weight: 400; opacity: .85; font-size: .8rem; }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 0 16px; }
+    nav { display: flex; gap: 6px; background: var(--surface); border-bottom: 1px solid var(--line);
+          padding: 8px 16px; overflow-x: auto; }
+    nav button { background: transparent; color: var(--muted); border: 0; padding: 8px 14px;
+                 border-radius: 8px; font: inherit; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    nav button[aria-selected="true"] { background: var(--H-bg); color: var(--primary); }
+    main { padding: 20px 0 48px; }
+    .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+            padding: 18px; margin-bottom: 16px; }
+    h2 { font-size: 1.05rem; margin: 0 0 12px; }
+    label { display: block; font-size: .85rem; font-weight: 600; margin-bottom: 4px; }
+    input, select, textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px;
+                              font: inherit; background: #fff; color: var(--text); }
+    input:focus, select:focus, textarea:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
+    .row { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+    .btn { border: 0; border-radius: 8px; padding: 10px 16px; font: inherit; font-weight: 600; cursor: pointer;
+           background: var(--primary); color: #fff; }
+    .btn:hover { background: var(--primary-dark); }
+    .btn.ghost { background: #fff; color: var(--text); border: 1px solid var(--line); }
+    .btn.danger { background: #fff; color: var(--A); border: 1px solid #f3c4c4; }
+    .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+    .muted { color: var(--muted); font-size: .85rem; }
+    .hidden { display: none !important; }
+    .msg { margin-top: 10px; padding: 10px 12px; border-radius: 8px; font-size: .88rem; display: none; }
+    .msg.show { display: block; } .msg.ok { background: var(--H-bg); color: var(--H); } .msg.err { background: var(--A-bg); color: var(--A); }
+
+    /* Ringkasan angka */
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; }
+    .stat { border-radius: 10px; padding: 10px 12px; }
+    .stat b { display: block; font-size: 1.4rem; }
+    .stat span { font-size: .8rem; }
+    .stat.H { background: var(--H-bg); color: var(--H); } .stat.I { background: var(--I-bg); color: var(--I); }
+    .stat.S { background: var(--S-bg); color: var(--S); } .stat.A { background: var(--A-bg); color: var(--A); }
+
+    /* Daftar absen */
+    .siswa { display: flex; align-items: center; justify-content: space-between; gap: 12px;
+             padding: 10px 0; border-bottom: 1px solid var(--line); }
+    .siswa:last-child { border-bottom: 0; }
+    .siswa .nama { font-weight: 600; }
+    .pilih { display: flex; gap: 6px; flex-shrink: 0; }
+    .pilih button { width: 44px; height: 40px; border-radius: 8px; border: 1px solid var(--line); background: #fff;
+                    font: inherit; font-weight: 700; cursor: pointer; color: var(--muted); }
+    .pilih button[aria-pressed="true"][data-s="H"] { background: var(--H); border-color: var(--H); color: #fff; }
+    .pilih button[aria-pressed="true"][data-s="I"] { background: var(--I); border-color: var(--I); color: #fff; }
+    .pilih button[aria-pressed="true"][data-s="S"] { background: var(--S); border-color: var(--S); color: #fff; }
+    .pilih button[aria-pressed="true"][data-s="A"] { background: var(--A); border-color: var(--A); color: #fff; }
+
+    table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    th, td { padding: 9px 8px; border-bottom: 1px solid var(--line); text-align: left; }
+    th { color: var(--muted); font-size: .78rem; text-transform: uppercase; letter-spacing: .03em; }
+    td.num, th.num { text-align: center; }
+    .pct { font-weight: 700; }
+    .low { color: var(--A); }
+    .scroll { overflow-x: auto; }
+    .legend { display: flex; gap: 12px; flex-wrap: wrap; font-size: .82rem; color: var(--muted); margin-bottom: 8px; }
+
+    @media (max-width: 560px) {
+      #info-kelas { display: none; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .siswa { flex-direction: column; align-items: stretch; }
+      .pilih button { flex: 1; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>AbsenKu <small>Absensi siswa sederhana · tanpa database</small></h1>
+      <span class="muted" style="color:#fff;opacity:.85" id="info-kelas"></span>
+    </div>
+  </header>
+
+  <nav role="tablist" aria-label="Menu">
+    <button role="tab" aria-selected="true"  data-tab="absen">Absen Hari Ini</button>
+    <button role="tab" aria-selected="false" data-tab="rekap">Rekap</button>
+    <button role="tab" aria-selected="false" data-tab="siswa">Data Siswa</button>
+  </nav>
+
+  <main class="wrap">
+    <!-- ============ TAB 1: ABSEN ============ -->
+    <section id="tab-absen">
+      <div class="card">
+        <div class="row">
+          <div><label for="pilih-kelas">Kelas</label><select id="pilih-kelas"></select></div>
+          <div><label for="pilih-tanggal">Tanggal</label><input id="pilih-tanggal" type="date"></div>
+        </div>
+      </div>
+
+      <div class="stats" aria-live="polite">
+        <div class="stat H"><b id="n-H">0</b><span>Hadir</span></div>
+        <div class="stat I"><b id="n-I">0</b><span>Izin</span></div>
+        <div class="stat S"><b id="n-S">0</b><span>Sakit</span></div>
+        <div class="stat A"><b id="n-A">0</b><span>Alpa</span></div>
+      </div>
+
+      <div class="card">
+        <h2>Daftar Siswa</h2>
+        <div class="legend"><span><b>H</b> Hadir</span><span><b>I</b> Izin</span><span><b>S</b> Sakit</span><span><b>A</b> Alpa</span></div>
+        <div id="daftar-absen"></div>
+        <p id="kosong-absen" class="muted hidden">Belum ada siswa di kelas ini. Tambahkan di menu <b>Data Siswa</b>.</p>
+        <div class="actions">
+          <button class="btn" id="btn-semua-hadir" type="button">Tandai semua Hadir</button>
+          <button class="btn ghost" id="btn-kosongkan" type="button">Kosongkan</button>
+        </div>
+        <div id="msg-absen" class="msg" role="status"></div>
+      </div>
+    </section>
+
+    <!-- ============ TAB 2: REKAP ============ -->
+    <section id="tab-rekap" class="hidden">
+      <div class="card">
+        <div class="row">
+          <div><label for="rekap-kelas">Kelas</label><select id="rekap-kelas"></select></div>
+          <div><label for="rekap-bulan">Bulan</label><input id="rekap-bulan" type="month"></div>
+        </div>
+      </div>
+      <div class="card">
+        <h2 id="judul-rekap">Rekap</h2>
+        <div class="scroll">
+          <table>
+            <thead><tr><th>Nama</th><th class="num">H</th><th class="num">I</th><th class="num">S</th><th class="num">A</th><th class="num">% Hadir</th></tr></thead>
+            <tbody id="tabel-rekap"></tbody>
+          </table>
+        </div>
+        <p id="kosong-rekap" class="muted hidden">Belum ada data absen di bulan ini.</p>
+        <p class="muted">% Hadir = jumlah Hadir ÷ jumlah hari yang diabsen. Di bawah 75% ditandai merah.</p>
+        <div class="actions"><button class="btn" id="btn-csv" type="button">Unduh CSV (buka di Excel)</button></div>
+      </div>
+    </section>
+
+    <!-- ============ TAB 3: DATA SISWA ============ -->
+    <section id="tab-siswa" class="hidden">
+      <div class="card">
+        <h2>Tambah Siswa</h2>
+        <div class="row">
+          <div><label for="kelas-baru">Kelas</label><input id="kelas-baru" maxlength="20" placeholder="cth. XI TJKT 1" list="daftar-kelas"></div>
+          <div><label for="nama-baru">Nama siswa</label><input id="nama-baru" maxlength="80" placeholder="cth. Yohana Mambor"></div>
+        </div>
+        <datalist id="daftar-kelas"></datalist>
+        <div style="margin-top:12px">
+          <label for="nama-banyak">Atau tempel banyak nama sekaligus (satu nama per baris)</label>
+          <textarea id="nama-banyak" rows="4" placeholder="Maria Rumbiak&#10;Rendi Kambu&#10;Yosua Wader"></textarea>
+        </div>
+        <div class="actions"><button class="btn" id="btn-tambah" type="button">Simpan Siswa</button></div>
+        <div id="msg-siswa" class="msg" role="status"></div>
+      </div>
+
+      <div class="card">
+        <h2>Daftar Siswa per Kelas</h2>
+        <div id="daftar-siswa"></div>
+      </div>
+
+      <div class="card">
+        <h2>Cadangan Data</h2>
+        <p class="muted">Data hanya tersimpan di browser ini. Unduh cadangan secara berkala, atau pindahkan ke laptop lain dengan fitur pulihkan.</p>
+        <div class="actions">
+          <button class="btn ghost" id="btn-backup" type="button">Unduh cadangan (.json)</button>
+          <label class="btn ghost" style="margin:0">Pulihkan dari file<input id="file-restore" type="file" accept=".json,application/json" class="hidden"></label>
+          <button class="btn danger" id="btn-reset" type="button">Hapus semua data</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+  // =====================================================================
+  // AbsenKu — semua logika aplikasi
+  // Data disimpan di localStorage browser dalam satu objek:
+  // { siswa: [{id, kelas, nama}], absen: { "YYYY-MM-DD|kelas": { idSiswa: "H"|"I"|"S"|"A" } } }
+  // =====================================================================
+  const KUNCI = "absenku_v1";
+  const STATUS = ["H", "I", "S", "A"];
+  const $ = (id) => document.getElementById(id);
+
+  // ---------- 1. PENYIMPANAN ----------
+  function muat() {
+    try {
+      const d = JSON.parse(localStorage.getItem(KUNCI));
+      if (d && Array.isArray(d.siswa) && d.absen) return d;
+    } catch (e) { /* browser memblokir penyimpanan: pakai data kosong */ }
+    return dataContoh();
+  }
+  function simpan() {
+    try { localStorage.setItem(KUNCI, JSON.stringify(db)); return true; }
+    catch (e) { alert("Data tidak bisa disimpan di browser ini (mode privat?)."); return false; }
+  }
+  function dataContoh() {
+    const nama = ["Yohana Mambor", "Rendi Kambu", "Maria Rumbiak", "Yosua Wader", "Kristina Ayomi", "Daniel Sawaki"];
+    return { siswa: nama.map((n, i) => ({ id: "s" + (i + 1), kelas: "XI TJKT 1", nama: n })), absen: {} };
+  }
+  let db = muat();
+
+  // ---------- 2. ALAT BANTU ----------
+  // KEAMANAN: semua teks dari pengguna di-escape sebelum masuk HTML (cegah XSS)
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const hariIni = () => new Date().toLocaleDateString("sv-SE");   // format YYYY-MM-DD waktu lokal
+  const idBaru = () => "s" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  const daftarKelas = () => [...new Set(db.siswa.map((s) => s.kelas))].sort();
+  const siswaKelas = (k) => db.siswa.filter((s) => s.kelas === k).sort((a, b) => a.nama.localeCompare(b.nama));
+  const kunciAbsen = (tgl, kelas) => tgl + "|" + kelas;
+
+  function pesan(el, teks, jenis) {
+    el.textContent = teks; el.className = "msg show " + jenis;
+    clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove("show"), 2500);
+  }
+  function isiPilihanKelas(select) {
+    const lama = select.value;
+    const kelas = daftarKelas();
+    select.innerHTML = kelas.map((k) => `<option>${esc(k)}</option>`).join("") || "<option value=''>Belum ada kelas</option>";
+    if (kelas.includes(lama)) select.value = lama;
+  }
+
+  // ---------- 3. TAB ABSEN ----------
+  function renderAbsen() {
+    const kelas = $("pilih-kelas").value, tgl = $("pilih-tanggal").value;
+    const data = db.absen[kunciAbsen(tgl, kelas)] || {};
+    const siswa = siswaKelas(kelas);
+    if (kelas) db.kelasTerakhir = kelas;   // ikut tersimpan saat simpan() berikutnya
+    $("info-kelas").textContent = kelas ? `${kelas} · ${siswa.length} siswa` : "";
+    $("kosong-absen").classList.toggle("hidden", siswa.length > 0);
+    $("daftar-absen").innerHTML = siswa.map((s) => `
+      <div class="siswa">
+        <span class="nama">${esc(s.nama)}</span>
+        <span class="pilih" role="group" aria-label="Status ${esc(s.nama)}">
+          ${STATUS.map((st) => `<button type="button" data-id="${esc(s.id)}" data-s="${st}"
+             aria-pressed="${data[s.id] === st}" title="${({H:"Hadir",I:"Izin",S:"Sakit",A:"Alpa"})[st]}">${st}</button>`).join("")}
+        </span>
+      </div>`).join("");
+    STATUS.forEach((st) => $("n-" + st).textContent = siswa.filter((s) => data[s.id] === st).length);
+  }
+
+  function setStatus(idSiswa, status) {
+    const k = kunciAbsen($("pilih-tanggal").value, $("pilih-kelas").value);
+    db.absen[k] = db.absen[k] || {};
+    // klik status yang sama dua kali = batalkan
+    if (db.absen[k][idSiswa] === status) delete db.absen[k][idSiswa];
+    else db.absen[k][idSiswa] = status;
+    if (simpan()) renderAbsen();
+  }
+
+  $("daftar-absen").addEventListener("click", (e) => {
+    const b = e.target.closest("button[data-s]");
+    if (b) setStatus(b.dataset.id, b.dataset.s);
+  });
+  $("btn-semua-hadir").addEventListener("click", () => {
+    const kelas = $("pilih-kelas").value, k = kunciAbsen($("pilih-tanggal").value, kelas);
+    db.absen[k] = db.absen[k] || {};
+    siswaKelas(kelas).forEach((s) => { if (!db.absen[k][s.id]) db.absen[k][s.id] = "H"; });
+    if (simpan()) { renderAbsen(); pesan($("msg-absen"), "Siswa yang belum diabsen ditandai Hadir.", "ok"); }
+  });
+  $("btn-kosongkan").addEventListener("click", () => {
+    if (!confirm("Kosongkan absen kelas ini pada tanggal tersebut?")) return;
+    delete db.absen[kunciAbsen($("pilih-tanggal").value, $("pilih-kelas").value)];
+    if (simpan()) renderAbsen();
+  });
+  $("pilih-kelas").addEventListener("change", () => {
+    db.kelasTerakhir = $("pilih-kelas").value; simpan(); renderAbsen();
+  });
+  $("pilih-tanggal").addEventListener("change", renderAbsen);
+
+  // ---------- 4. TAB REKAP ----------
+  function hitungRekap(kelas, bulan) {
+    const hasil = siswaKelas(kelas).map((s) => ({ nama: s.nama, H: 0, I: 0, S: 0, A: 0 }));
+    const idx = Object.fromEntries(siswaKelas(kelas).map((s, i) => [s.id, i]));
+    Object.entries(db.absen).forEach(([k, data]) => {
+      const [tgl, kls] = k.split("|");
+      if (kls !== kelas || !tgl.startsWith(bulan)) return;
+      Object.entries(data).forEach(([id, st]) => { if (id in idx) hasil[idx[id]][st]++; });
+    });
+    hasil.forEach((r) => {
+      const total = r.H + r.I + r.S + r.A;
+      r.pct = total ? Math.round((r.H / total) * 100) : null;
+    });
+    return hasil;
+  }
+
+  function renderRekap() {
+    const kelas = $("rekap-kelas").value, bulan = $("rekap-bulan").value;
+    const namaBulan = bulan ? new Date(bulan + "-01T00:00").toLocaleDateString("id-ID", { month: "long", year: "numeric" }) : "";
+    $("judul-rekap").textContent = `Rekap ${kelas} · ${namaBulan}`;
+    const rows = hitungRekap(kelas, bulan);
+    const adaData = rows.some((r) => r.pct !== null);
+    $("kosong-rekap").classList.toggle("hidden", adaData);
+    $("tabel-rekap").innerHTML = rows.map((r) => `
+      <tr><td>${esc(r.nama)}</td><td class="num">${r.H}</td><td class="num">${r.I}</td><td class="num">${r.S}</td><td class="num">${r.A}</td>
+      <td class="num pct ${r.pct !== null && r.pct < 75 ? "low" : ""}">${r.pct === null ? "–" : r.pct + "%"}</td></tr>`).join("");
+  }
+
+  function unduh(namaFile, isi, tipe) {
+    const url = URL.createObjectURL(new Blob([isi], { type: tipe }));
+    const a = Object.assign(document.createElement("a"), { href: url, download: namaFile });
+    document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  }
+
+  $("btn-csv").addEventListener("click", () => {
+    const kelas = $("rekap-kelas").value, bulan = $("rekap-bulan").value;
+    // KEAMANAN: cegah "CSV injection" — sel yang diawali = + - @ diberi tanda kutip
+    const sel = (v) => { let s = String(v); if (/^[=+\-@]/.test(s)) s = "'" + s; return '"' + s.replace(/"/g, '""') + '"'; };
+    const baris = [["Nama", "Hadir", "Izin", "Sakit", "Alpa", "% Hadir"]]
+      .concat(hitungRekap(kelas, bulan).map((r) => [r.nama, r.H, r.I, r.S, r.A, r.pct === null ? "" : r.pct]));
+    unduh(`rekap-${kelas}-${bulan}.csv`.replace(/\s+/g, "_"), "﻿" + baris.map((b) => b.map(sel).join(";")).join("\r\n"), "text/csv");
+  });
+  $("rekap-kelas").addEventListener("change", renderRekap);
+  $("rekap-bulan").addEventListener("change", renderRekap);
+
+  // ---------- 5. TAB DATA SISWA ----------
+  function renderSiswa() {
+    $("daftar-kelas").innerHTML = daftarKelas().map((k) => `<option value="${esc(k)}">`).join("");
+    const kelas = daftarKelas();
+    $("daftar-siswa").innerHTML = kelas.length ? kelas.map((k) => `
+      <h3 style="font-size:.95rem;margin:14px 0 6px">${esc(k)} <span class="muted">(${siswaKelas(k).length})</span></h3>
+      ${siswaKelas(k).map((s) => `<div class="siswa"><span>${esc(s.nama)}</span>
+        <button class="btn danger" type="button" data-hapus="${esc(s.id)}" style="padding:6px 12px">Hapus</button></div>`).join("")}`).join("")
+      : '<p class="muted">Belum ada siswa.</p>';
+  }
+
+  $("btn-tambah").addEventListener("click", () => {
+    const kelas = $("kelas-baru").value.trim();
+    const nama = [$("nama-baru").value, ...$("nama-banyak").value.split("\n")]
+      .map((n) => n.trim()).filter((n) => n.length >= 3 && n.length <= 80);
+    if (kelas.length < 2) return pesan($("msg-siswa"), "Isi nama kelas dulu (minimal 2 huruf).", "err");
+    if (!nama.length) return pesan($("msg-siswa"), "Isi minimal satu nama siswa (3–80 huruf).", "err");
+    const sudahAda = new Set(siswaKelas(kelas).map((s) => s.nama.toLowerCase()));
+    const baru = nama.filter((n) => !sudahAda.has(n.toLowerCase()));
+    baru.forEach((n) => db.siswa.push({ id: idBaru(), kelas, nama: n }));
+    if (simpan()) {
+      $("nama-baru").value = ""; $("nama-banyak").value = "";
+      pesan($("msg-siswa"), `${baru.length} siswa ditambahkan ke ${kelas}` + (baru.length < nama.length ? " (nama yang sudah ada dilewati)." : "."), "ok");
+      segarkanSemua();
+    }
+  });
+
+  $("daftar-siswa").addEventListener("click", (e) => {
+    const id = e.target.dataset.hapus;
+    const s = db.siswa.find((x) => x.id === id);
+    if (!s || !confirm(`Hapus ${s.nama} dari ${s.kelas}? Riwayat absennya ikut terhapus.`)) return;
+    db.siswa = db.siswa.filter((x) => x.id !== id);
+    Object.values(db.absen).forEach((d) => delete d[id]);
+    if (simpan()) segarkanSemua();
+  });
+
+  $("btn-backup").addEventListener("click", () =>
+    unduh(`absenku-cadangan-${hariIni()}.json`, JSON.stringify(db, null, 2), "application/json"));
+
+  $("file-restore").addEventListener("change", async (e) => {
+    const f = e.target.files[0]; e.target.value = "";
+    if (!f) return;
+    try {
+      const d = JSON.parse(await f.text());
+      // validasi struktur sebelum menimpa data
+      const valid = Array.isArray(d.siswa) && d.absen && typeof d.absen === "object" &&
+        d.siswa.every((s) => typeof s.id === "string" && typeof s.nama === "string" && typeof s.kelas === "string");
+      if (!valid) throw new Error("format");
+      if (!confirm("Data sekarang akan diganti dengan isi file cadangan. Lanjutkan?")) return;
+      db = { siswa: d.siswa, absen: d.absen, kelasTerakhir: d.kelasTerakhir };
+      if (simpan()) { segarkanSemua(); alert("Data berhasil dipulihkan."); }
+    } catch { alert("File cadangan tidak valid."); }
+  });
+
+  $("btn-reset").addEventListener("click", () => {
+    if (!confirm("Hapus SEMUA siswa dan riwayat absen? Tindakan ini tidak bisa dibatalkan.")) return;
+    db = { siswa: [], absen: {} };
+    if (simpan()) segarkanSemua();
+  });
+
+  // ---------- 6. NAVIGASI & MULAI ----------
+  document.querySelector("nav").addEventListener("click", (e) => {
+    const tab = e.target.dataset.tab;
+    if (!tab) return;
+    document.querySelectorAll("nav button").forEach((b) => b.setAttribute("aria-selected", b.dataset.tab === tab));
+    ["absen", "rekap", "siswa"].forEach((t) => $("tab-" + t).classList.toggle("hidden", t !== tab));
+    segarkanSemua();
+  });
+
+  function segarkanSemua() {
+    isiPilihanKelas($("pilih-kelas")); isiPilihanKelas($("rekap-kelas"));
+    renderAbsen(); renderRekap(); renderSiswa();
+  }
+
+  // buka kelas yang terakhir dipakai
+  if (db.kelasTerakhir && daftarKelas().includes(db.kelasTerakhir)) {
+    isiPilihanKelas($("pilih-kelas")); isiPilihanKelas($("rekap-kelas"));
+    $("pilih-kelas").value = db.kelasTerakhir; $("rekap-kelas").value = db.kelasTerakhir;
+  }
+  $("pilih-tanggal").value = hariIni();
+  $("rekap-bulan").value = hariIni().slice(0, 7);
+  segarkanSemua();
+  </script>
+</body>
+</html>
