@@ -1,4 +1,4 @@
-# Starter Kit Lomba Aplikasi Berbantuan AI
+# Starter Kit Lomba Aplikasi Web
 
 **Perancangan dan Pengembangan Aplikasi Berbasis Web Berbantuan Artificial Intelligence (AI)**
 SMK Negeri 1 Sorong · 2026
