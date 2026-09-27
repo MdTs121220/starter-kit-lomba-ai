@@ -3,29 +3,29 @@
 **Perancangan dan Pengembangan Aplikasi Berbasis Web Berbantuan Artificial Intelligence (AI)**
 SMK Negeri 1 Sorong · 2026
 
-Kit ini membantu tim kalian membangun aplikasi dengan AI secara **terarah, aman, dan bisa dipertanggungjawabkan** di depan juri.
+Kit ini buat bantu tim kalian bikin aplikasi bareng AI dengan cara yang **terarah, aman, dan bisa kalian jelaskan** di depan juri.
 
 ## Isi kit
 
 ```
 starter-kit-lomba-ai/
-├── README.md                  ← kalian sedang membaca ini
-├── PRD.md                     ← ISI PERTAMA: kebutuhan aplikasi kalian
-├── AGENTS.md                  ← aturan kerja untuk AI (tempel ke AI di awal)
-├── CLAUDE.md                  ← penghubung untuk Claude Code (membaca AGENTS.md)
+├── README.md                  ← yang sedang kalian baca
+├── PRD.md                     ← ISI PALING DULU: kebutuhan aplikasi kalian
+├── AGENTS.md                  ← aturan main buat AI (tempel ke AI di awal)
+├── CLAUDE.md                  ← penghubung untuk Claude Code (mengambil isi AGENTS.md)
 ├── docs/
-│   ├── WORKFLOW.md            ← 7 langkah kerja dengan AI
+│   ├── WORKFLOW.md            ← 7 langkah kerja bareng AI
 │   ├── BANK-PROMPT.md         ← kumpulan prompt siap pakai
-│   ├── CHECKLIST-KEAMANAN.md  ← cek sebelum dikumpulkan
+│   ├── CHECKLIST-KEAMANAN.md  ← cek dulu sebelum dikumpulkan
 │   ├── DEFINITION-OF-DONE.md  ← kapan fitur dianggap "selesai"
-│   ├── PANDUAN-GITHUB.md      ← upload kode & hosting gratis
+│   ├── PANDUAN-GITHUB.md      ← upload kode & online-kan gratis
 │   ├── PANDUAN-SUPABASE.md    ← database + login gratis, langkah demi langkah
 │   └── PANDUAN-PRESENTASI.md  ← demo 10 menit, video, manual, poster
 ├── contoh/
 │   ├── PRD-contoh-absenku.md
 │   └── PRD-contoh-pinjamlab.md
 ├── demo-absen/                ← DEMO 1: AbsenKu, absen siswa TANPA database (bisa offline)
-└── demo-app/                  ← DEMO 2: PinjamLab, peminjaman alat lab DENGAN database Supabase
+└── demo-app/                  ← DEMO 2: PinjamLab, pinjam alat lab DENGAN database Supabase
 ```
 
 ## Dua aplikasi demo
@@ -37,40 +37,40 @@ starter-kit-lomba-ai/
 | Butuh internet | Tidak | Ya |
 | Cocok untuk | Pemula, demo cadangan | Aplikasi yang dipakai banyak guru |
 
-Coba online (setelah GitHub Pages aktif):
+Coba langsung (setelah GitHub Pages aktif):
 - AbsenKu: https://mdts121220.github.io/starter-kit-lomba-ai/demo-absen/
 - PinjamLab: https://mdts121220.github.io/starter-kit-lomba-ai/demo-app/
 
 ## Mulai dalam 6 langkah
 
-1. **Fork / download** kit ini, lalu buat repository GitHub untuk tim kalian.
-2. **Isi `PRD.md`** bersama tim. Wawancarai calon pengguna (guru, TU, petugas perpus). Jangan lewati langkah ini.
-3. **Pilih stack** yang kalian kuasai dan catat di `AGENTS.md` bagian *Stack*.
-4. **Mulai sesi AI** dengan menempelkan `AGENTS.md` + `PRD.md`, lalu minta *rencana*, bukan kode. Lihat `docs/BANK-PROMPT.md` prompt #1.
-5. **Butuh database?** Pakai PHP + MySQL, atau Supabase gratis: ikuti `docs/PANDUAN-SUPABASE.md`.
-6. **Bangun per fitur**, uji, commit ke GitHub, ulangi. Sebelum mengumpulkan, jalankan `docs/CHECKLIST-KEAMANAN.md`.
+1. **Download atau fork** kit ini, lalu bikin repository GitHub buat tim kalian.
+2. **Isi `PRD.md`** bareng tim. Ngobrol dulu dengan calon pengguna (guru, TU, petugas perpus). Langkah ini jangan dilewati.
+3. **Pilih teknologi** yang paling kalian kuasai, lalu tulis di `AGENTS.md` bagian *Stack*.
+4. **Mulai ngobrol dengan AI**: tempel `AGENTS.md` + `PRD.md`, lalu minta *rencana* dulu, belum kode. Lihat prompt #1 di `docs/BANK-PROMPT.md`.
+5. **Butuh database?** Pakai PHP + MySQL, atau Supabase yang gratis: ikuti `docs/PANDUAN-SUPABASE.md`.
+6. **Bikin per fitur**, coba, commit ke GitHub, ulangi. Sebelum dikumpulkan, jalankan `docs/CHECKLIST-KEAMANAN.md`.
 
-## Pilihan tools AI (versi gratis, September 2026)
+## Tools AI yang bisa dipakai gratis (September 2026)
 
-| Kategori | Contoh | Cocok untuk |
+| Jenis | Contoh | Dipakai buat |
 |---|---|---|
-| Chat AI | ChatGPT, Gemini, Claude, Copilot | Brainstorm, PRD, desain database, debug, dokumentasi |
-| App builder | Google AI Studio (mode *Build*) | Prototipe UI cepat dari prompt |
-| IDE dengan agen AI | Google Antigravity, VS Code + GitHub Copilot | Ngoding proyek utuh bersama AI |
-| Agen di terminal | Codex CLI (tersedia di paket ChatGPT Free, kuota terbatas), Antigravity CLI | Tingkat lanjut: AI membaca & mengubah banyak file |
-| Berbayar (info) | Claude Code (butuh paket Claude berbayar) | Referensi, tidak wajib |
+| Chat AI | ChatGPT, Gemini, Claude, Copilot | Curah ide, PRD, rancang database, cari bug, dokumentasi |
+| App builder | Google AI Studio (mode *Build*) | Bikin contoh tampilan cepat dari prompt |
+| IDE + agen AI | Google Antigravity, VS Code + GitHub Copilot | Ngoding satu proyek penuh bareng AI |
+| Agen di terminal | Codex CLI (ada di akun ChatGPT gratis, kuota kecil), Antigravity CLI | Level lanjut: AI membaca dan mengubah banyak file sendiri |
+| Berbayar (info saja) | Claude Code (perlu langganan Claude) | Tidak wajib |
 
-> Kuota gratis tiap tool bisa berubah sewaktu-waktu. Siapkan minimal **dua** tool cadangan.
+> Kuota gratis tiap tool bisa berubah kapan saja. Siapkan minimal **dua** tool cadangan.
 
-### Nama file instruksi per tool
-AI coding agent membaca file instruksi di akar proyek, tapi namanya berbeda:
+### Tiap tool beda nama filenya
+AI coding agent membaca file instruksi di folder utama proyek, tapi namanya beda-beda:
 - **AGENTS.md** → Codex, Antigravity, Copilot, dan banyak tool lain
-- **CLAUDE.md** → Claude Code (file di kit ini sudah mengarahkan ke AGENTS.md)
-- **Chat biasa** (ChatGPT/Gemini web) → tidak membaca file otomatis, **tempel isi AGENTS.md secara manual** di awal percakapan.
+- **CLAUDE.md** → Claude Code (di kit ini isinya sudah mengambil AGENTS.md)
+- **Chat biasa** (ChatGPT/Gemini di web) → tidak bisa baca file, jadi **tempel isi AGENTS.md** di awal percakapan
 
 ## Aturan emas
-1. **Kalian pilotnya, AI co-pilot.** Setiap baris kode harus bisa kalian jelaskan ke juri.
-2. **Satu prompt, satu fitur.** Jangan minta "buatkan aplikasi lengkap".
-3. **Commit setiap fitur yang jalan.** Kalau AI merusak sesuatu, kalian bisa kembali.
-4. **Jangan tempel data pribadi asli** (NISN, nomor HP, dll.) ke AI. Pakai data contoh.
-5. **Jujur soal AI.** Cantumkan tools AI yang dipakai di dokumentasi.
+1. **Kalian yang pegang kemudi, AI yang bantu.** Kode apa pun di aplikasi kalian harus bisa kalian jelaskan ke juri.
+2. **Satu prompt, satu fitur.** Jangan minta "buatkan aplikasi lengkap" sekaligus.
+3. **Commit setiap fitur yang sudah jalan.** Kalau AI merusak sesuatu, kalian masih bisa balik.
+4. **Jangan tempel data pribadi asli** (NISN, nomor HP) ke AI. Pakai data contoh saja.
+5. **Jujur soal AI.** Tulis di README tools AI apa saja yang dipakai dan untuk apa.

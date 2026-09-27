@@ -1,18 +1,18 @@
 # Bank Prompt Siap Pakai
 
-Ganti bagian `<...>`. Prompt yang baik punya 5 unsur: **Peran · Konteks · Tugas · Batasan · Format hasil**.
+Tinggal ganti bagian `<...>` dengan punya kalian. Prompt yang bagus punya 5 bagian: **Peran · Konteks · Tugas · Batasan · Format**.
 
 ---
 
-## Prompt buruk vs prompt baik
+## Prompt asal-asalan vs prompt yang jelas
 
-**❌ Buruk**
+**❌ Asal-asalan**
 ```
 buatin aplikasi absensi
 ```
-Hasilnya: kode panjang yang asal jadi, stack acak, tidak aman, dan kalian tidak paham isinya.
+Hasilnya: kodenya panjang tapi asal jadi, teknologinya dipilih asal, tidak aman, dan kalian tidak paham isinya.
 
-**✅ Baik**
+**✅ Jelas**
 ```
 Peran: Kamu senior web developer yang membimbing siswa SMK.
 Konteks: Aplikasi absensi siswa untuk SMK Negeri 1 Sorong. Pengguna: guru (input absen),
@@ -26,7 +26,7 @@ sederhana dan cara mengujinya. Jangan lanjut ke fitur lain sebelum saya konfirma
 
 ---
 
-## #0 — Kritik PRD
+## #0 — Minta AI mengkritik PRD
 ```
 Berikut PRD aplikasi kami untuk lomba. Bertindaklah sebagai juri yang teliti.
 1) Sebutkan bagian yang belum jelas atau saling bertentangan.
@@ -37,7 +37,7 @@ Jangan menulis kode.
 <tempel PRD.md>
 ```
 
-## #1 — Minta rencana (bukan kode)
+## #1 — Minta rencana dulu (belum kode)
 ```
 <tempel AGENTS.md>
 <tempel PRD.md>
@@ -49,7 +49,7 @@ Buat RENCANA IMPLEMENTASI saja, jangan menulis kode:
 - Risiko keamanan yang perlu diperhatikan untuk aplikasi ini
 ```
 
-## #2 — Bangun satu fitur
+## #2 — Bikin satu fitur
 ```
 Rencana sudah disetujui. Sekarang kerjakan HANYA fitur <F2: nama fitur>.
 Kriteria berhasil: <salin dari PRD>.
@@ -57,7 +57,7 @@ Ikuti aturan di AGENTS.md. Tampilkan file yang dibuat/diubah secara lengkap,
 lalu jelaskan cara kerjanya dalam 5 poin dan cara mengujinya.
 ```
 
-## #3 — Debug error
+## #3 — Cari penyebab error
 ```
 Fitur <nama> error.
 Yang saya lakukan: <langkah>
@@ -71,7 +71,7 @@ Jelaskan PENYEBAB-nya dulu dengan bahasa sederhana, baru beri perbaikan minimal.
 Jangan mengubah bagian lain.
 ```
 
-## #4 — Audit keamanan
+## #4 — Cek keamanan
 ```
 Bertindaklah sebagai auditor keamanan aplikasi web. Periksa kode berikut terhadap:
 SQL injection, XSS, CSRF, password tidak di-hash, cek login/role yang bisa dilewati,
@@ -81,7 +81,7 @@ contoh cara menyerang, dan perbaikannya.
 <tempel kode>
 ```
 
-## #5 — Jelaskan kode (persiapan tanya jawab juri)
+## #5 — Minta AI menjelaskan kode (buat persiapan tanya jawab)
 ```
 Jelaskan kode berikut seolah kepada siswa SMK kelas XI:
 1) Apa tugas kode ini secara umum?
@@ -90,7 +90,7 @@ Jelaskan kode berikut seolah kepada siswa SMK kelas XI:
 <tempel kode>
 ```
 
-## #6 — Perbaiki tampilan (UI/UX)
+## #6 — Rapikan tampilan (UI/UX)
 ```
 Perbaiki tampilan halaman <nama> agar: responsif di HP 360px, konsisten dengan
 warna utama <warna>, setiap tombol punya status loading, pesan error jelas,
@@ -99,7 +99,7 @@ Jangan mengubah logika atau nama fungsi.
 <tempel kode>
 ```
 
-## #7 — Dokumentasi
+## #7 — Bikin dokumentasi
 ```
 Berdasarkan kode dan PRD berikut, buatkan:
 1) README.md: deskripsi, fitur, teknologi, cara instal, akun demo, tools AI yang dipakai
@@ -107,14 +107,14 @@ Berdasarkan kode dan PRD berikut, buatkan:
 3) Naskah video tutorial 3 menit
 ```
 
-## #8 — Poster / flyer
+## #8 — Konsep poster / flyer
 ```
 Buat konsep poster A3 untuk aplikasi <nama>: headline maksimal 6 kata,
 3 manfaat utama, 3 fitur unggulan dengan ikon, QR code ke <link>,
 nama tim, logo sekolah. Sarankan palet warna dan tata letak.
 ```
 
-## #9 — Latihan tanya jawab
+## #9 — Latihan tanya jawab dengan "juri" AI
 ```
 Kamu juri lomba aplikasi SMK. Ajukan 10 pertanyaan sulit tentang aplikasi kami
 (fungsi, keamanan, manfaat, desain, alasan teknologi). Tanyakan satu per satu,

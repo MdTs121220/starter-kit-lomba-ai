@@ -1,23 +1,23 @@
-# Definition of Done (DoD)
+# Kapan Dianggap Selesai? (Definition of Done)
 
-## Per fitur
-Fitur boleh dicentang "selesai" di PRD hanya jika:
-- [ ] Memenuhi *kriteria berhasil* yang tertulis di PRD
-- [ ] Diuji dengan data benar, data salah, dan data kosong
-- [ ] Tidak ada error di console browser / log server
-- [ ] Tampil baik di HP (360px) dan laptop
-- [ ] Lolos bagian relevan di `CHECKLIST-KEAMANAN.md`
-- [ ] **Minimal 2 anggota tim bisa menjelaskan cara kerjanya tanpa membuka AI**
+## Setiap fitur
+Fitur baru boleh dicentang "selesai" di PRD kalau:
+- [ ] Sudah sesuai *kriteria berhasil* yang ditulis di PRD
+- [ ] Sudah dicoba dengan data benar, salah, dan kosong
+- [ ] Tidak ada error di console browser atau log server
+- [ ] Tampil rapi di HP (360px) dan laptop
+- [ ] Lolos bagian yang relevan di `CHECKLIST-KEAMANAN.md`
+- [ ] **Minimal 2 anggota tim bisa menjelaskan cara kerjanya tanpa buka AI**
 - [ ] Sudah di-commit ke GitHub
 
-## Per aplikasi (sebelum dikumpulkan)
-Sesuai ketentuan teknis lomba:
-- [ ] **Source code** di repository GitHub (Public atau akses diberikan ke panitia)
-- [ ] **Link hosting** aktif dan bisa dibuka dari HP lain / **file APK** bisa diinstal
-- [ ] **Database**: file `.sql` / skema disertakan di repository
-- [ ] **Akun demo** untuk tiap peran tertulis di README
+## Seluruh aplikasi (sebelum dikumpulkan)
+Sesuai ketentuan lomba:
+- [ ] **Source code** ada di GitHub (Public, atau akses sudah diberikan ke panitia)
+- [ ] **Link hosting** bisa dibuka dari HP orang lain, atau **file APK** bisa diinstal
+- [ ] **Database**: file `.sql` atau skemanya ikut di repository
+- [ ] **Akun demo** tiap peran ditulis di README
 - [ ] **Manual penggunaan** (PDF)
-- [ ] **Video tutorial** (link YouTube/Drive)
+- [ ] **Video tutorial** (link YouTube atau Drive)
 - [ ] **Poster/flyer** aplikasi (wajib)
-- [ ] **Slide presentasi** untuk demo 10 menit, sudah latihan dengan timer
-- [ ] Cantumkan tools AI yang digunakan di README
+- [ ] **Slide presentasi** untuk demo 10 menit, sudah latihan pakai timer
+- [ ] Tools AI yang dipakai sudah ditulis di README

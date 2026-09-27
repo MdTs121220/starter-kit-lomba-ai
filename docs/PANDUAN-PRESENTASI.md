@@ -1,39 +1,39 @@
 # Panduan Presentasi & Dokumentasi
 
-Kriteria **Presentasi & Dokumentasi = 10%**, tapi presentasi juga menentukan kesan juri terhadap 90% lainnya.
+Nilai **Presentasi & Dokumentasi = 10%**, tapi cara kalian presentasi juga memengaruhi kesan juri untuk 90% sisanya.
 
-## Struktur demo 10 menit
+## Demo 10 menit
 | Menit | Isi |
 |---|---|
-| 0:00–1:00 | Perkenalan tim + **masalah** (cerita nyata dari narasumber) |
-| 1:00–2:00 | Solusi dalam 1 kalimat + siapa penggunanya |
-| 2:00–7:00 | **Demo langsung** alur utama: login → fitur inti → hasil. Tunjukkan di HP juga |
-| 7:00–8:30 | Teknologi, keamanan yang diterapkan, bagaimana AI membantu |
-| 8:30–10:00 | Manfaat terukur + rencana pengembangan |
+| 0:00–1:00 | Kenalan tim + **masalah nyata** (cerita dari narasumber) |
+| 1:00–2:00 | Solusinya dalam 1 kalimat + siapa penggunanya |
+| 2:00–7:00 | **Demo langsung** alur utama: login → fitur inti → hasilnya. Tunjukkan juga di HP |
+| 7:00–8:30 | Teknologi, keamanan yang dipasang, dan peran AI |
+| 8:30–10:00 | Manfaat nyata + rencana ke depan |
 
-**Tips:** siapkan data contoh yang rapi, akun demo sudah login di tab lain, dan **video rekaman demo sebagai cadangan** kalau internet gagal.
+**Tips:** siapkan data contoh yang rapi, buka akun demo di tab lain, dan **bawa rekaman video demo** buat jaga-jaga kalau internet bermasalah.
 
 ## Tanya jawab 5 menit
-- Bagi peran: siapa menjawab soal kode, desain, dan manfaat.
-- Latihan dengan prompt #9 di `BANK-PROMPT.md`.
+- Bagi tugas dulu: siapa yang jawab soal kode, desain, dan manfaat.
+- Latihan pakai prompt #9 di `BANK-PROMPT.md`.
 - Kalau tidak tahu, jawab jujur lalu jelaskan cara kalian akan mencari tahu.
 
 ## Manual penggunaan (PDF)
 1. Sampul: nama aplikasi, tim, sekolah
-2. Tentang aplikasi & kebutuhan sistem
-3. Cara akses / instalasi + akun demo
-4. Panduan per peran, langkah bernomor + screenshot
-5. Pertanyaan umum (FAQ) & kontak tim
+2. Tentang aplikasi & kebutuhan perangkat
+3. Cara membuka / menginstal + akun demo
+4. Panduan tiap peran, langkah bernomor + screenshot
+5. Pertanyaan yang sering muncul (FAQ) & kontak tim
 
 ## Video tutorial (3–5 menit)
-- Rekam layar (OBS Studio gratis / perekam bawaan HP), suara jelas, tanpa musik keras.
-- Alur: pembuka 15 detik → demo per peran → penutup dengan link aplikasi.
-- Unggah ke YouTube (*Unlisted*) atau Google Drive, cantumkan link di README.
+- Rekam layar pakai OBS Studio (gratis) atau perekam bawaan HP. Suara harus jelas, musiknya jangan keras.
+- Alurnya: pembuka 15 detik → demo tiap peran → penutup dengan link aplikasi.
+- Upload ke YouTube (*Unlisted*) atau Google Drive, lalu tulis link-nya di README.
 
 ## Poster / flyer (wajib)
-- Ukuran A3 / A4 portrait. Buat di Canva (gratis).
-- Isi: nama & logo aplikasi, headline masalah→solusi, 3 fitur utama, screenshot di mockup HP/laptop, **QR code ke link aplikasi**, nama tim & sekolah.
-- Maksimal 2 font, 1 warna utama + 1 warna aksen, teks terbaca dari 2 meter.
+- Ukuran A3 atau A4 tegak. Bisa dibuat di Canva (gratis).
+- Isinya: nama & logo aplikasi, masalah → solusi, 3 fitur utama, screenshot di mockup HP/laptop, **QR code ke aplikasi**, nama tim & sekolah.
+- Maksimal 2 jenis huruf, 1 warna utama + 1 warna aksen, dan teksnya masih terbaca dari jarak 2 meter.
 
 ## README repository
-Deskripsi · Masalah & solusi · Fitur · Screenshot · Teknologi · Cara instal · Akun demo · Link hosting & video · Anggota tim · **Tools AI yang digunakan dan untuk apa**
+Deskripsi · Masalah & solusi · Fitur · Screenshot · Teknologi · Cara instal · Akun demo · Link aplikasi & video · Anggota tim · **Tools AI yang dipakai dan untuk apa**

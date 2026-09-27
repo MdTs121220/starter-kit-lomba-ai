@@ -1,7 +1,7 @@
 # Panduan Supabase: Database Gratis untuk Aplikasi Web
 
-Supabase memberi database PostgreSQL + fitur login secara **gratis**, jadi aplikasi HTML/JavaScript
-bisa punya database sungguhan tanpa server PHP. Waktu: ±15 menit.
+Supabase kasih database PostgreSQL plus fitur login secara **gratis**. Jadi aplikasi HTML/JavaScript
+kalian bisa punya database beneran tanpa perlu server PHP. Waktunya sekitar 15 menit.
 Contoh yang sudah jadi: folder [`demo-app/`](../demo-app/).
 
 ## Supabase atau PHP + MySQL?
@@ -14,7 +14,7 @@ Contoh yang sudah jadi: folder [`demo-app/`](../demo-app/).
 | Batas gratis | 2 proyek aktif, database 500 MB, dijeda otomatis kalau ±1 minggu tidak dipakai | Tergantung hosting; sering ada iklan atau batas CPU |
 | Yang dikumpulkan | `schema.sql` + link GitHub Pages | File `.sql` hasil export + link hosting |
 
-Keduanya sah untuk lomba. Pilih yang paling dikuasai tim.
+Dua-duanya sah buat lomba. Pilih yang paling kalian kuasai.
 
 ## Langkah 1: Buat proyek
 1. Buka **supabase.com** → **Start your project** → daftar pakai akun GitHub.
@@ -37,8 +37,8 @@ Berdasarkan PRD berikut, buatkan schema.sql untuk Supabase (PostgreSQL):
 ```
 
 ## Langkah 3: Kunci keamanannya
-**Row Level Security (RLS)** = aturan "siapa boleh membaca atau mengubah baris data".
-Kunci publik Supabase memang terlihat di kode frontend, jadi **tanpa RLS siapa pun bisa membaca dan menghapus seluruh data**.
+**Row Level Security (RLS)** itu aturan "siapa yang boleh membaca atau mengubah data".
+Kunci publik Supabase memang kelihatan di kode frontend, jadi **tanpa RLS siapa pun bisa membaca dan menghapus semua data kalian**.
 
 - [ ] Di Table Editor, tidak ada tabel berlabel **RLS disabled** / **Unrestricted**
 - [ ] **Authentication → Sign In / Providers**: matikan **Allow new users to sign up** kalau akun hanya dibuat admin
@@ -80,7 +80,7 @@ window.APP_CONFIG = {
 </script>
 ```
 
-Bingung? Minta AI: *"Sambungkan index.html ini ke Supabase memakai config.js, jelaskan setiap baris yang berhubungan dengan database."*
+Masih bingung? Minta tolong AI: *"Sambungkan index.html ini ke Supabase memakai config.js, jelaskan setiap baris yang berhubungan dengan database."*
 
 ## Langkah 6: Uji dan kumpulkan
 - [ ] Buka aplikasi di jendela **Incognito** tanpa login: data tidak boleh tampil

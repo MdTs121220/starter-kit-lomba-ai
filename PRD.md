@@ -1,7 +1,7 @@
 # PRD — Product Requirements Document
 
-> Isi dokumen ini **sebelum** menulis satu baris kode pun. PRD adalah "surat pesanan" untuk AI:
-> semakin jelas PRD, semakin tepat hasil AI. Hapus teks panduan (yang diawali `>`) setelah diisi.
+> Isi dokumen ini **sebelum** menulis kode apa pun. Anggap PRD ini "surat pesanan" buat AI:
+> makin jelas PRD-nya, makin pas hasil dari AI. Teks panduan (yang diawali `>`) boleh dihapus setelah diisi.
 > Contoh lengkap: `contoh/PRD-contoh-pinjamlab.md`
 
 ## 1. Identitas
@@ -14,8 +14,8 @@
 - **Link hosting / APK:**
 
 ## 2. Masalah
-> Masalah NYATA apa di SMK Negeri 1 Sorong yang diselesaikan? Siapa yang mengalaminya?
-> Tulis hasil wawancara singkat dengan calon pengguna. Ini dasar nilai **Inovasi & Manfaat (20%)**.
+> Masalah NYATA apa di SMK Negeri 1 Sorong yang mau kalian selesaikan? Siapa yang mengalaminya?
+> Tulis hasil ngobrol singkat dengan calon pengguna. Ini dasar nilai **Inovasi & Manfaat (20%)**.
 
 - **Masalah saat ini:**
 - **Siapa yang terdampak:**
@@ -35,7 +35,7 @@
 
 ## 5. Fitur
 > Bagi jadi WAJIB (harus jalan saat lomba) dan TAMBAHAN (kalau sempat).
-> Lebih baik 4 fitur wajib yang mulus daripada 10 fitur setengah jadi.
+> 4 fitur wajib yang mulus jauh lebih baik daripada 10 fitur setengah jadi.
 
 ### Wajib (MVP)
 | No | Fitur | Peran | Kriteria berhasil |
@@ -49,7 +49,7 @@
 - 
 
 ## 6. Alur Pengguna
-> Tulis langkah demi langkah dari sudut pandang pengguna.
+> Tulis langkah demi langkah dari sisi pengguna.
 
 1. Guru membuka aplikasi → login →
 2. 
@@ -76,7 +76,7 @@
 - **Harus bisa offline?** Ya / Tidak
 
 ## 10. Di Luar Cakupan
-> Apa yang SENGAJA tidak dibuat, supaya AI dan tim tidak melebar.
+> Apa yang SENGAJA tidak dibuat, supaya AI dan tim tidak melebar ke mana-mana.
 
 - 
 
