@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PinjamLab — Peminjaman Alat Lab</title>
+  <meta name="description" content="Aplikasi pencatatan peminjaman alat laboratorium komputer sekolah.">
+  <style>
+    /* ---------- Warna & ukuran dasar (design tokens) ---------- */
+    :root {
+      --bg: #f4f6fb; --surface: #ffffff; --text: #1b2333; --muted: #5d6879;
+      --line: #e1e6ef; --primary: #1f5eff; --primary-dark: #1547c7;
+      --ok: #0f8a5f; --ok-bg: #e3f6ee; --warn: #b25e00; --warn-bg: #fff1dc;
+      --danger: #c62b2b; --radius: 12px; --shadow: 0 1px 3px rgba(20,30,60,.08);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+           background: var(--bg); color: var(--text); line-height: 1.5; }
+    header { background: var(--primary); color: #fff; padding: 14px 16px; }
+    .wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+    header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0; }
+    header h1 { font-size: 1.15rem; margin: 0; }
+    header small { opacity: .85; display: block; font-weight: 400; font-size: .8rem; }
+    main { padding: 20px 0 40px; }
+    .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+            box-shadow: var(--shadow); padding: 18px; margin-bottom: 16px; }
+    h2 { font-size: 1.05rem; margin: 0 0 12px; }
+    label { display: block; font-size: .85rem; font-weight: 600; margin-bottom: 4px; }
+    input, select { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px;
+                    font: inherit; background: #fff; color: var(--text); }
+    input:focus, select:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
+    .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
+    button { font: inherit; border: 0; border-radius: 8px; padding: 10px 16px; cursor: pointer;
+             background: var(--primary); color: #fff; font-weight: 600; }
+    button:hover { background: var(--primary-dark); }
+    button.ghost { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.6); padding: 6px 12px; }
+    button.small { padding: 6px 10px; font-size: .82rem; background: var(--ok); }
+    button:disabled { opacity: .6; cursor: wait; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+    .stat { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; }
+    .stat b { display: block; font-size: 1.6rem; }
+    .stat span { color: var(--muted); font-size: .82rem; }
+    .toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+    .toolbar input { flex: 1 1 200px; } .toolbar select { flex: 0 1 180px; }
+    table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: var(--muted); font-size: .78rem; text-transform: uppercase; letter-spacing: .03em; }
+    .badge { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: .78rem; font-weight: 600; }
+    .badge.dipinjam { background: var(--warn-bg); color: var(--warn); }
+    .badge.dikembalikan { background: var(--ok-bg); color: var(--ok); }
+    .muted { color: var(--muted); font-size: .85rem; }
+    .msg { padding: 10px 12px; border-radius: 8px; margin-top: 10px; font-size: .88rem; display: none; }
+    .msg.show { display: block; } .msg.err { background: #fde8e8; color: var(--danger); }
+    .msg.ok { background: var(--ok-bg); color: var(--ok); }
+    .demo-banner { background: var(--warn-bg); color: var(--warn); padding: 8px 16px; font-size: .85rem; text-align: center; }
+    #login-view { max-width: 400px; margin: 40px auto; }
+    .hidden { display: none !important; }
+    .empty { text-align: center; padding: 28px 8px; color: var(--muted); }
+    /* Tabel menjadi kartu di layar HP */
+    @media (max-width: 640px) {
+      #user-email { display: none; }
+      .stats { grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+      .stat b { font-size: 1.25rem; }
+      thead { display: none; }
+      table, tbody, tr, td { display: block; width: 100%; }
+      tr { border: 1px solid var(--line); border-radius: 10px; margin-bottom: 10px; padding: 8px 10px; }
+      td { border: 0; padding: 4px 0; }
+      td::before { content: attr(data-label) ": "; font-weight: 600; color: var(--muted); font-size: .8rem; }
+    }
+  </style>
+</head>
+<body>
+  <div id="demo-banner" class="demo-banner hidden">
+    Mode Demo: data hanya tersimpan di browser ini. Isi <code>config.js</code> untuk memakai database Supabase.
+  </div>
+
+  <header>
+    <div class="wrap">
+      <h1>PinjamLab <small>Peminjaman Alat Lab Komputer</small></h1>
+      <div>
+        <span id="user-email" class="muted" style="color:#fff;opacity:.85;margin-right:8px"></span>
+        <button id="btn-logout" class="ghost hidden" type="button">Keluar</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- ================= HALAMAN LOGIN ================= -->
+    <section id="login-view" class="card">
+      <h2>Masuk sebagai Guru / Petugas Lab</h2>
+      <form id="login-form" novalidate>
+        <div style="margin-bottom:12px">
+          <label for="email">Email</label>
+          <input id="email" type="email" autocomplete="username" required>
+        </div>
+        <div style="margin-bottom:14px">
+          <label for="password">Password</label>
+          <input id="password" type="password" autocomplete="current-password" required minlength="6">
+        </div>
+        <button type="submit" style="width:100%">Masuk</button>
+        <p id="demo-hint" class="muted hidden" style="margin-bottom:0">Mode demo: isi email apa saja dan password minimal 6 karakter.</p>
+        <div id="login-msg" class="msg err" role="alert"></div>
+      </form>
+    </section>
+
+    <!-- ================= HALAMAN UTAMA ================= -->
+    <section id="app-view" class="hidden">
+      <div class="stats">
+        <div class="stat"><b id="stat-aktif">0</b><span>Sedang dipinjam</span></div>
+        <div class="stat"><b id="stat-hari">0</b><span>Transaksi hari ini</span></div>
+        <div class="stat"><b id="stat-total">0</b><span>Total catatan</span></div>
+      </div>
+
+      <div class="card">
+        <h2>Catat Peminjaman Baru</h2>
+        <form id="pinjam-form" novalidate>
+          <div class="grid">
+            <div><label for="f-nama">Nama siswa</label><input id="f-nama" required maxlength="100" placeholder="cth. Yohana Mambor"></div>
+            <div><label for="f-kelas">Kelas</label>
+              <select id="f-kelas" required>
+                <option value="">Pilih kelas</option>
+                <option>X TJKT 1</option><option>X TJKT 2</option>
+                <option>XI TJKT 1</option><option>XI TJKT 2</option>
+                <option>XII TJKT 1</option><option>XII TJKT 2</option>
+              </select>
+            </div>
+            <div><label for="f-alat">Alat</label>
+              <select id="f-alat" required>
+                <option value="">Pilih alat</option>
+                <option>Tang crimping</option><option>LAN tester</option><option>Kabel UTP (roll)</option>
+                <option>Router MikroTik</option><option>Switch</option><option>Access Point</option>
+                <option>Obeng set</option><option>Multimeter</option>
+              </select>
+            </div>
+            <div><label for="f-jumlah">Jumlah</label><input id="f-jumlah" type="number" min="1" max="50" value="1" required></div>
+          </div>
+          <div style="margin-top:14px"><button id="btn-simpan" type="submit">Simpan</button></div>
+          <div id="form-msg" class="msg" role="status"></div>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>Daftar Peminjaman</h2>
+        <div class="toolbar">
+          <input id="cari" type="search" placeholder="Cari nama, kelas, atau alat…" aria-label="Cari">
+          <select id="filter-status" aria-label="Filter status">
+            <option value="">Semua status</option>
+            <option value="dipinjam">Sedang dipinjam</option>
+            <option value="dikembalikan">Sudah dikembalikan</option>
+          </select>
+        </div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th>Siswa</th><th>Kelas</th><th>Alat</th><th>Jml</th><th>Dipinjam</th><th>Status</th><th>Aksi</th></tr></thead>
+            <tbody id="tabel-body"></tbody>
+          </table>
+          <div id="kosong" class="empty hidden">Belum ada data yang cocok.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+  // =====================================================================
+  // PinjamLab — logika aplikasi
+  // Struktur: 1) lapisan data (Supabase ATAU mode demo)  2) tampilan  3) event
+  // =====================================================================
+  const cfg = window.PINJAMLAB_CONFIG || {};
+  const MODE_DEMO = !cfg.SUPABASE_URL || !cfg.SUPABASE_ANON_KEY || !window.supabase;
+  const $ = (id) => document.getElementById(id);
+  let semuaData = [];
+
+  // ---------- 1. LAPISAN DATA ----------
+  // Semua akses database lewat objek "db", sehingga tampilan tidak peduli
+  // apakah datanya dari Supabase atau dari localStorage (mode demo).
+  let db;
+  if (!MODE_DEMO) {
+    const sb = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY);
+    db = {
+      async sesi() { const { data } = await sb.auth.getSession(); return data.session?.user || null; },
+      async login(email, password) {
+        const { data, error } = await sb.auth.signInWithPassword({ email, password });
+        if (error) throw new Error("Email atau password salah.");
+        return data.user;
+      },
+      async logout() { await sb.auth.signOut(); },
+      async ambil() {
+        const { data, error } = await sb.from("peminjaman").select("*").order("dipinjam_pada", { ascending: false });
+        if (error) throw error; return data;
+      },
+      async tambah(row) { const { error } = await sb.from("peminjaman").insert(row); if (error) throw error; },
+      async kembalikan(id) {
+        const { error } = await sb.from("peminjaman")
+          .update({ status: "dikembalikan", dikembalikan_pada: new Date().toISOString() }).eq("id", id);
+        if (error) throw error;
+      }
+    };
+  } else {
+    // Mode demo: simulasi database di localStorage (untuk latihan / cadangan presentasi)
+    const KEY = "pinjamlab_demo";
+    const baca = () => { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch { return []; } };
+    const tulis = (d) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch {} };
+    let user = null;
+    try { user = JSON.parse(sessionStorage.getItem(KEY + "_user")); } catch {}
+    db = {
+      async sesi() { return user; },
+      async login(email, password) {
+        if (!email.includes("@") || password.length < 6) throw new Error("Email tidak valid atau password kurang dari 6 karakter.");
+        user = { email }; try { sessionStorage.setItem(KEY + "_user", JSON.stringify(user)); } catch {}
+        return user;
+      },
+      async logout() { user = null; try { sessionStorage.removeItem(KEY + "_user"); } catch {} },
+      async ambil() {
+        let d = baca();
+        if (!d.length) { // contoh data awal
+          const j = (h) => new Date(Date.now() - h * 3600e3).toISOString();
+          d = [
+            { id: 3, nama_siswa: "Yohana Mambor", kelas: "XI TJKT 1", alat: "Tang crimping", jumlah: 2, status: "dipinjam", dipinjam_pada: j(1) },
+            { id: 2, nama_siswa: "Rendi Kambu", kelas: "X TJKT 2", alat: "LAN tester", jumlah: 1, status: "dikembalikan", dipinjam_pada: j(5), dikembalikan_pada: j(3) },
+            { id: 1, nama_siswa: "Maria Rumbiak", kelas: "XII TJKT 1", alat: "Router MikroTik", jumlah: 1, status: "dipinjam", dipinjam_pada: j(26) }
+          ];
+          tulis(d);
+        }
+        return d.sort((a, b) => b.dipinjam_pada.localeCompare(a.dipinjam_pada));
+      },
+      async tambah(row) {
+        const d = baca();
+        d.push({ ...row, id: Date.now(), status: "dipinjam", dipinjam_pada: new Date().toISOString() });
+        tulis(d);
+      },
+      async kembalikan(id) {
+        tulis(baca().map((r) => r.id === id ? { ...r, status: "dikembalikan", dikembalikan_pada: new Date().toISOString() } : r));
+      }
+    };
+  }
+
+  // ---------- 2. TAMPILAN ----------
+  // KEAMANAN: semua teks dari pengguna di-escape sebelum masuk HTML (cegah XSS).
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const fmt = (iso) => iso ? new Date(iso).toLocaleString("id-ID", { dateStyle: "medium", timeStyle: "short" }) : "-";
+
+  function pesan(el, teks, jenis) {
+    el.textContent = teks; el.className = "msg show " + jenis;
+    if (jenis === "ok") setTimeout(() => el.classList.remove("show"), 2500);
+  }
+
+  function render() {
+    const q = $("cari").value.trim().toLowerCase();
+    const st = $("filter-status").value;
+    const hasil = semuaData.filter((r) =>
+      (!st || r.status === st) &&
+      (!q || [r.nama_siswa, r.kelas, r.alat].join(" ").toLowerCase().includes(q)));
+
+    $("tabel-body").innerHTML = hasil.map((r) => `
+      <tr>
+        <td data-label="Siswa">${esc(r.nama_siswa)}</td>
+        <td data-label="Kelas">${esc(r.kelas)}</td>
+        <td data-label="Alat">${esc(r.alat)}</td>
+        <td data-label="Jumlah">${esc(r.jumlah)}</td>
+        <td data-label="Dipinjam">${fmt(r.dipinjam_pada)}</td>
+        <td data-label="Status"><span class="badge ${esc(r.status)}">${r.status === "dipinjam" ? "Dipinjam" : "Dikembalikan"}</span>
+          ${r.dikembalikan_pada ? `<div class="muted">${fmt(r.dikembalikan_pada)}</div>` : ""}</td>
+        <td data-label="Aksi">${r.status === "dipinjam"
+          ? `<button class="small" data-kembali="${esc(r.id)}">Kembalikan</button>` : "—"}</td>
+      </tr>`).join("");
+    $("kosong").classList.toggle("hidden", hasil.length > 0);
+
+    const hariIni = new Date().toDateString();
+    $("stat-aktif").textContent = semuaData.filter((r) => r.status === "dipinjam").length;
+    $("stat-hari").textContent = semuaData.filter((r) => new Date(r.dipinjam_pada).toDateString() === hariIni).length;
+    $("stat-total").textContent = semuaData.length;
+  }
+
+  async function muatData() {
+    try { semuaData = await db.ambil(); render(); }
+    catch (e) { console.error(e); alert("Gagal memuat data. Periksa koneksi internet."); }
+  }
+
+  async function tampilkan(user) {
+    $("login-view").classList.toggle("hidden", !!user);
+    $("app-view").classList.toggle("hidden", !user);
+    $("btn-logout").classList.toggle("hidden", !user);
+    $("user-email").textContent = user ? user.email : "";
+    if (user) await muatData();
+  }
+
+  // ---------- 3. EVENT ----------
+  $("login-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    try { await tampilkan(await db.login($("email").value.trim(), $("password").value)); }
+    catch (err) { pesan($("login-msg"), err.message, "err"); }
+  });
+
+  $("btn-logout").addEventListener("click", async () => { await db.logout(); tampilkan(null); });
+
+  $("pinjam-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    // Validasi input di sisi klien (database juga memvalidasi lewat CHECK constraint)
+    const row = {
+      nama_siswa: $("f-nama").value.trim(),
+      kelas: $("f-kelas").value,
+      alat: $("f-alat").value,
+      jumlah: parseInt($("f-jumlah").value, 10)
+    };
+    if (row.nama_siswa.length < 3) return pesan($("form-msg"), "Nama siswa minimal 3 huruf.", "err");
+    if (!row.kelas || !row.alat) return pesan($("form-msg"), "Kelas dan alat wajib dipilih.", "err");
+    if (!(row.jumlah >= 1 && row.jumlah <= 50)) return pesan($("form-msg"), "Jumlah harus 1 sampai 50.", "err");
+
+    const btn = $("btn-simpan"); btn.disabled = true; btn.textContent = "Menyimpan…";
+    try {
+      await db.tambah(row);
+      e.target.reset(); $("f-jumlah").value = 1;
+      pesan($("form-msg"), "Peminjaman tercatat.", "ok");
+      await muatData();
+    } catch (err) { console.error(err); pesan($("form-msg"), "Gagal menyimpan. Coba lagi.", "err"); }
+    finally { btn.disabled = false; btn.textContent = "Simpan"; }
+  });
+
+  $("tabel-body").addEventListener("click", async (e) => {
+    const id = e.target.dataset.kembali;
+    if (!id || !confirm("Tandai alat ini sudah dikembalikan?")) return;
+    try { await db.kembalikan(Number(id)); await muatData(); }
+    catch (err) { console.error(err); alert("Gagal memperbarui status."); }
+  });
+
+  $("cari").addEventListener("input", render);
+  $("filter-status").addEventListener("change", render);
+
+  // Mulai aplikasi
+  if (MODE_DEMO) { $("demo-banner").classList.remove("hidden"); $("demo-hint").classList.remove("hidden"); }
+  db.sesi().then(tampilkan);
+  </script>
+</body>
+</html>

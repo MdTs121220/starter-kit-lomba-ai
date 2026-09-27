@@ -1,0 +1,8 @@
+# Rahasia & file lokal
+.env
+.env.*
+*.log
+node_modules/
+vendor/
+.DS_Store
+Thumbs.db
