@@ -1,7 +1,8 @@
 # Starter Kit Lomba Aplikasi Web
 
 **Perancangan dan Pengembangan Aplikasi Berbasis Web Berbantuan Artificial Intelligence (AI)**
-SMK Negeri 1 Sorong · 2026
+SMK Negeri 1 Sorong · 29 September 2026
+by : M. Dwiyanto Tobi, ST.,MT
 
 Kit ini buat bantu tim kalian bikin aplikasi bareng AI dengan cara yang **terarah, aman, dan bisa kalian jelaskan** di depan juri.
 
