@@ -5,11 +5,14 @@ SMK Negeri 1 Sorong · 2026
 
 Kit ini buat bantu tim kalian bikin aplikasi bareng AI dengan cara yang **terarah, aman, dan bisa kalian jelaskan** di depan juri.
 
+> **Materi lengkap sesi 29 September 2026 ada di [`MATERI-SISWA.md`](MATERI-SISWA.md).** Baca itu dulu, lalu pakai file-file di bawah saat mengerjakan proyek.
+
 ## Isi kit
 
 ```
 starter-kit-lomba-ai/
 ├── README.md                  ← yang sedang kalian baca
+├── MATERI-SISWA.md            ← MATERI LENGKAP SESI (baca ini dulu)
 ├── PRD.md                     ← ISI PALING DULU: kebutuhan aplikasi kalian
 ├── AGENTS.md                  ← aturan main buat AI (tempel ke AI di awal)
 ├── CLAUDE.md                  ← penghubung untuk Claude Code (mengambil isi AGENTS.md)
