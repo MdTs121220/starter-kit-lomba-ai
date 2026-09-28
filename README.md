@@ -24,6 +24,7 @@ starter-kit-lomba-ai/
 ├── contoh/
 │   ├── PRD-contoh-absenku.md
 │   └── PRD-contoh-pinjamlab.md
+├── demo-live/                ← PANDUAN DEMO LIVE + prompt siap Copy (untuk pemateri & latihan)
 ├── demo-absen/                ← DEMO 1: AbsenKu, absen siswa TANPA database (bisa offline)
 └── demo-app/                  ← DEMO 2: PinjamLab, pinjam alat lab DENGAN database Supabase
 ```
